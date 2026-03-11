@@ -13,58 +13,73 @@ import HostRoundControlScreen from './components/HostRoundControlScreen';
 import HostResultsScreen from './components/HostResultsScreen';
 import HostFinalScreen from './components/HostFinalScreen';
 import LateJoinScreen from './components/LateJoinScreen';
+import { PhaseChangeNotice } from './components/PhaseChangeNotice';
 
 const App: React.FC = () => {
-  const { state, isHost, mePlayer } = useRoom();
+  const { state, isHost, mePlayer, me } = useRoom();
   const room = state.room;
+  let screen: React.ReactNode;
+
   if (!room) {
-    return <JoinScreen />;
-  }
-
-  if (!isHost && !mePlayer) {
-    return <JoinScreen />;
-  }
-
-  if (!isHost && mePlayer && room.phase !== 'lobby' && !mePlayer.isActive) {
-    return <LateJoinScreen />;
-  }
-
-  if (isHost) {
+    screen = <JoinScreen />;
+  } else if (!isHost && !mePlayer) {
+    screen = <JoinScreen />;
+  } else if (!isHost && mePlayer && room.phase !== 'lobby' && !mePlayer.isActive) {
+    screen = <LateJoinScreen />;
+  } else if (isHost) {
     switch (room.phase) {
       case 'lobby':
-        return <HostLobbyScreen />;
+        screen = <HostLobbyScreen />;
+        break;
       case 'answering':
       case 'revealing':
       case 'voting':
       case 'results':
-        return <HostRoundControlScreen />;
+        screen = <HostRoundControlScreen />;
+        break;
       case 'scoreboard':
-        return <HostResultsScreen />;
+        screen = <HostResultsScreen />;
+        break;
       case 'final':
-        return <HostFinalScreen />;
+        screen = <HostFinalScreen />;
+        break;
       default:
-        return <div>Unknown phase</div>;
+        screen = <div>Unknown phase</div>;
+    }
+  } else {
+    switch (room.phase) {
+      case 'lobby':
+        screen = <LobbyScreen />;
+        break;
+      case 'answering':
+        screen = <AnswerScreen />;
+        break;
+      case 'revealing':
+        screen = <RevealScreen />;
+        break;
+      case 'voting':
+        screen = <VotingScreen />;
+        break;
+      case 'results':
+        screen = <ResultsScreen />;
+        break;
+      case 'scoreboard':
+        screen = <ScoreboardScreen />;
+        break;
+      case 'final':
+        screen = <FinalScreen />;
+        break;
+      default:
+        screen = <div>Unknown phase</div>;
     }
   }
 
-  switch (room.phase) {
-    case 'lobby':
-      return <LobbyScreen />;
-    case 'answering':
-      return <AnswerScreen />;
-    case 'revealing':
-      return <RevealScreen />;
-    case 'voting':
-      return <VotingScreen />;
-    case 'results':
-      return <ResultsScreen />;
-    case 'scoreboard':
-      return <ScoreboardScreen />;
-    case 'final':
-      return <FinalScreen />;
-    default:
-      return <div>Unknown phase</div>;
-  }
+  return (
+    <>
+      {screen}
+      <PhaseChangeNotice state={state} isHost={isHost} me={me} />
+    </>
+  );
 };
 
 export default App;
