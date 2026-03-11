@@ -1,5 +1,6 @@
 import React from 'react';
 import { Phase } from '@shared/types';
+import bpLogo from '../assets/bp-logo.png';
 
 const PHASE_LABELS: Record<Phase, string> = {
   lobby: 'Lobby',
@@ -85,8 +86,7 @@ export const AppShell: React.FC<AppShellProps> = ({
         <div className="brand-ribbon">
           <div className="brand-ribbon__identity">
             <div className="brand-mark" aria-hidden="true">
-              <span className="brand-mark__ring" />
-              <span className="brand-mark__letters">BP</span>
+              <img className="brand-mark__logo" src={bpLogo} alt="" />
             </div>
             <div>
               <div className="brand-ribbon__label">Bayanihan Partners</div>
