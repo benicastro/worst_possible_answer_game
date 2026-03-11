@@ -41,11 +41,13 @@ const RevealScreen: React.FC = () => {
         <Panel title="On stage now" description="This is the current answer the room is reacting to." emphasis="accent">
           {latestReveal ? (
             <div className="spotlight-card">
+              <div className="show-stamp">Freshly revealed</div>
               <div className="spotlight-card__tag">Newest reveal</div>
               <div className="spotlight-card__text">{latestReveal.text}</div>
             </div>
           ) : (
             <div className="spotlight-card spotlight-card--empty">
+              <div className="show-stamp show-stamp--soft">Stand by</div>
               <div className="spotlight-card__tag">Curtain rising</div>
               <div className="spotlight-card__text">Waiting for the host to reveal the first answer.</div>
             </div>

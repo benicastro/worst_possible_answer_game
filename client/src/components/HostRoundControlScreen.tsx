@@ -128,11 +128,13 @@ const HostRoundControlScreen: React.FC = () => {
           <Panel title="Reveal stage" description="Use the latest reveal card as your main host cue." emphasis="default">
             {latestReveal ? (
               <div className="spotlight-card">
+                <div className="show-stamp">Host cue</div>
                 <div className="spotlight-card__tag">Newest reveal</div>
                 <div className="spotlight-card__text">{latestReveal.text}</div>
               </div>
             ) : (
               <div className="spotlight-card spotlight-card--empty">
+                <div className="show-stamp show-stamp--soft">Stand by</div>
                 <div className="spotlight-card__tag">Curtain rising</div>
                 <div className="spotlight-card__text">No answers have been revealed yet.</div>
               </div>
@@ -165,6 +167,7 @@ const HostRoundControlScreen: React.FC = () => {
             {resultRows.length > 0 ? (
               <>
                 <div className="winner-hero winner-hero--compact">
+                  <div className="show-stamp">Announcement cue</div>
                   <div className="winner-hero__label">Round winner</div>
                   <div className="winner-hero__text">{resultRows.find((row) => row.isWinner)?.text ?? 'No winning answer this round.'}</div>
                   <div className="winner-hero__meta">

@@ -49,9 +49,11 @@ const HostResultsScreen: React.FC = () => {
     >
       <div className="split-layout split-layout--cinema">
         <Panel title="Podium" description="This is the host-friendly snapshot to announce out loud." emphasis="accent">
+          <div className="round-chip">Announcement view</div>
           <div className="podium">
             {podium.map((entry, index) => (
               <div key={entry.id} className={`podium__card podium__card--${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`}>
+                <div className="show-stamp show-stamp--soft">{index === 0 ? 'Say this first' : index === 1 ? 'Good follow-up' : 'Still on the board'}</div>
                 <div className="podium__place">#{index + 1}</div>
                 <div className="podium__name">{entry.name}</div>
                 <div className="podium__detail">{entry.detail}</div>
