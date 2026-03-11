@@ -28,12 +28,13 @@ import { ClientEvents, ServerEvents } from '../shared/events.js';
 import { HostSettings } from '../shared/types.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const configuredOrigin = process.env.CORS_ORIGIN ?? process.env.RENDER_EXTERNAL_URL ?? '*';
 
 const app = express();
 const server = http.createServer(app);
 const io = new IOServer(server, {
   cors: {
-    origin: '*',
+    origin: configuredOrigin,
   }
 });
 
@@ -43,6 +44,14 @@ let phaseTimerHandle: ReturnType<typeof setTimeout> | null = null;
 
 // serve static client build if present
 app.use(express.static(clientDistPath));
+
+app.get('/health', (_req, res) => {
+  res.json({
+    ok: true,
+    roomActive: Boolean(state.room),
+    phase: state.room?.phase ?? null
+  });
+});
 
 app.get('/', (_req, res) => {
   if (existsSync(clientIndexPath)) {
