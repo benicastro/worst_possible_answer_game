@@ -54,6 +54,16 @@ interface AppShellProps {
   children: React.ReactNode;
 }
 
+const SHOW_BEATS = [
+  { id: 'lobby', label: 'Warm-up' },
+  { id: 'answering', label: 'Pitch' },
+  { id: 'revealing', label: 'Reveal' },
+  { id: 'voting', label: 'Vote' },
+  { id: 'results', label: 'Payoff' },
+  { id: 'scoreboard', label: 'Standings' },
+  { id: 'final', label: 'Finale' }
+] as const;
+
 export const AppShell: React.FC<AppShellProps> = ({
   title,
   subtitle,
@@ -95,6 +105,23 @@ export const AppShell: React.FC<AppShellProps> = ({
           </div>
           <div className="brand-ribbon__tag">Powered by the Bayanihan spirit</div>
         </div>
+        {phase ? (
+          <div className="cue-strip" aria-label="Game flow">
+            {SHOW_BEATS.map((beat) => (
+              <div
+                key={beat.id}
+                className={
+                  beat.id === phase
+                    ? 'cue-strip__beat cue-strip__beat--active'
+                    : 'cue-strip__beat'
+                }
+              >
+                <span className="cue-strip__dot" />
+                <span>{beat.label}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
         <header className="hero-card">
           <div className="hero-card__copy">
             <div className="eyebrow">{role === 'host' ? 'Host Console' : role === 'player' ? 'Player View' : 'Worst Possible Answer'}</div>
