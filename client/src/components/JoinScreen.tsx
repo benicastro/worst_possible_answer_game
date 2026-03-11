@@ -10,7 +10,7 @@ const JoinScreen: React.FC = () => {
   return (
     <AppShell
       title="A party game for gloriously bad answers"
-      subtitle="One host runs the room. Everyone else submits the funniest wrong answer they can think of."
+      subtitle="A Bayanihan Partners team game: one host runs the room, everyone else submits the funniest wrong answer they can think of."
       role="guest"
       status={
         room ? (
