@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRoom } from '../RoomContext';
-import { AppShell, ButtonRow, Panel, Stack } from './AppShell';
+import { AppShell, ButtonRow, Panel, PromptCard, Stack } from './AppShell';
 import { PhaseTimer } from './PhaseTimer';
 
 const AnswerScreen: React.FC = () => {
@@ -16,14 +16,14 @@ const AnswerScreen: React.FC = () => {
 
   return (
     <AppShell
-      title="Make it confidently wrong"
-      subtitle={room.prompt}
+      title="Answer the prompt"
       role="player"
       roomCode={room.code}
       phase={room.phase}
       round={room.round}
       totalRounds={room.totalRounds}
     >
+      <PromptCard prompt={room.prompt} label="Your challenge" />
       <Panel
         title={locked ? 'You are locked in' : 'Your answer'}
         description={locked ? (mePlayer.hasSkipped ? 'You skipped this one, but you still get to vote later.' : 'You are done for this round. Now wait for the reveal.') : 'You get one shot. Make it funny, bold, and obviously incorrect.'}

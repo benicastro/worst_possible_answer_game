@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useRoom } from '../RoomContext';
-import { AppShell, ButtonRow, Panel } from './AppShell';
+import { AppShell, ButtonRow, Panel, PromptCard } from './AppShell';
 import { PhaseTimer } from './PhaseTimer';
 
 const VotingScreen: React.FC = () => {
@@ -19,14 +19,14 @@ const VotingScreen: React.FC = () => {
 
   return (
     <AppShell
-      title="Choose the funniest disaster"
-      subtitle={room.prompt}
+      title="Pick a winner"
       role="player"
       roomCode={room.code}
       phase={room.phase}
       round={room.round}
       totalRounds={room.totalRounds}
     >
+      <PromptCard prompt={room.prompt} label="What everyone answered" />
       <Panel title="Answer list" description={mePlayer.hasVoted ? 'Your vote is locked in.' : 'Pick the answer that made you laugh the hardest.'} emphasis="accent">
         <PhaseTimer room={room} label="Voting closes in" />
         <div className="panel-spacer" />

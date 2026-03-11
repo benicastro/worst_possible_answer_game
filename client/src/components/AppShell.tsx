@@ -69,6 +69,18 @@ export const AppShell: React.FC<AppShellProps> = ({
 }) => {
   const vibe = phase ? PHASE_VIBES[role][phase] : 'Room open';
   const phaseClass = phase ? `app-shell--phase-${phase}` : 'app-shell--phase-idle';
+  const badges = (
+    <div className="badge-cluster">
+      <span className={`badge badge--${role}`}>{role}</span>
+      {phase ? <span className="badge">{PHASE_LABELS[phase]}</span> : null}
+      {roomCode ? <span className="badge">Room {roomCode}</span> : null}
+      {typeof round === 'number' && typeof totalRounds === 'number' ? (
+        <span className="badge">
+          Round {round}/{totalRounds}
+        </span>
+      ) : null}
+    </div>
+  );
 
   return (
     <div className={`app-shell app-shell--${role} ${phaseClass}`}>
@@ -95,33 +107,30 @@ export const AppShell: React.FC<AppShellProps> = ({
           </div>
           <div className="brand-ribbon__tag">Powered by the Bayanihan spirit</div>
         </div>
-        <header className="hero-card">
-          <div className="hero-card__copy">
-            <div className="eyebrow">{role === 'host' ? 'Host Console' : role === 'player' ? 'Player View' : 'Worst Possible Answer'}</div>
-            <h1>{title}</h1>
-            {subtitle ? <p className="hero-card__subtitle">{subtitle}</p> : null}
-          </div>
-          <div className="hero-card__rail">
-            <div className="badge-cluster">
-              <span className={`badge badge--${role}`}>{role}</span>
-              {phase ? <span className="badge">{PHASE_LABELS[phase]}</span> : null}
-              {roomCode ? <span className="badge">Room {roomCode}</span> : null}
-              {typeof round === 'number' && typeof totalRounds === 'number' ? (
-                <span className="badge">
-                  Round {round}/{totalRounds}
-                </span>
-              ) : null}
+        {role === 'player' ? (
+          <section className="player-meta-bar">
+            {badges}
+          </section>
+        ) : (
+          <header className="hero-card">
+            <div className="hero-card__copy">
+              <div className="eyebrow">{role === 'host' ? 'Host Console' : 'Worst Possible Answer'}</div>
+              <h1>{title}</h1>
+              {subtitle ? <p className="hero-card__subtitle">{subtitle}</p> : null}
             </div>
-            <div className="mascot-card">
-              <div className="mascot-card__face">
-                <span className="mascot-card__eye" />
-                <span className="mascot-card__eye" />
-                <span className="mascot-card__smile" />
+            <div className="hero-card__rail">
+              {badges}
+              <div className="mascot-card">
+                <div className="mascot-card__face">
+                  <span className="mascot-card__eye" />
+                  <span className="mascot-card__eye" />
+                  <span className="mascot-card__smile" />
+                </div>
+                <div className="mascot-card__label">{vibe}</div>
               </div>
-              <div className="mascot-card__label">{vibe}</div>
             </div>
-          </div>
-        </header>
+          </header>
+        )}
         {status ? <section className="status-banner">{status}</section> : null}
         <section className="app-shell__content">{children}</section>
         {actions ? <footer className="app-shell__footer">{actions}</footer> : null}
@@ -168,6 +177,19 @@ export const Stack: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
 export const ButtonRow: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <div className="button-row">{children}</div>;
+};
+
+export const PromptCard: React.FC<{
+  prompt: string;
+  label?: string;
+  tone?: 'player' | 'host';
+}> = ({ prompt, label = 'Round prompt', tone = 'player' }) => {
+  return (
+    <section className={`prompt-card prompt-card--${tone}`}>
+      <div className="prompt-card__label">{label}</div>
+      <div className="prompt-card__text">{prompt}</div>
+    </section>
+  );
 };
 
 export const LeaderboardList: React.FC<{

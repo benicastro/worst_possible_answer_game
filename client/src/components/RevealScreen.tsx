@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRoom } from '../RoomContext';
-import { AppShell, Panel } from './AppShell';
+import { AppShell, Panel, PromptCard } from './AppShell';
 
 const RevealScreen: React.FC = () => {
   const { state } = useRoom();
@@ -17,14 +17,14 @@ const RevealScreen: React.FC = () => {
 
   return (
     <AppShell
-      title="The room is hearing them one by one"
-      subtitle={room.prompt}
+      title="Answer reveal"
       role="player"
       roomCode={room.code}
       phase={room.phase}
       round={room.round}
       totalRounds={room.totalRounds}
     >
+      <PromptCard prompt={room.prompt} label="Tonight's prompt" />
       <div className="split-layout split-layout--cinema">
         <Panel title="On stage now" description="This is the current answer the room is reacting to." emphasis="accent">
           {latestReveal ? (
