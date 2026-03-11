@@ -190,6 +190,34 @@ export function submitVote(voterId: string, answerId: string) {
   voter.hasVoted = true;
 }
 
+export function getPhaseTimerDeadline(room: RoomState): number | null {
+  if (room.phase === 'answering') {
+    return room.phaseStartedAt + room.answerTimerSeconds * 1000;
+  }
+
+  if (room.phase === 'voting') {
+    return room.phaseStartedAt + room.voteTimerSeconds * 1000;
+  }
+
+  return null;
+}
+
+export function isAnsweringComplete(room: RoomState): boolean {
+  const activePlayers = getActivePlayers(room);
+  return activePlayers.length > 0 && activePlayers.every((player) => player.hasSubmitted || player.hasSkipped);
+}
+
+export function getEligibleVoters(room: RoomState): Player[] {
+  return getActivePlayers(room).filter((player) =>
+    room.answers.some((answer) => answer.playerId !== player.id)
+  );
+}
+
+export function isVotingComplete(room: RoomState): boolean {
+  const eligibleVoters = getEligibleVoters(room);
+  return eligibleVoters.length === 0 || eligibleVoters.every((player) => player.hasVoted);
+}
+
 export function advanceToResults() {
   const room = requireRoom();
   if (room.phase !== 'voting' && !(room.phase === 'revealing' && room.answers.length === 0)) {
@@ -304,6 +332,10 @@ function requireRoom(): RoomState {
 function getActivePlayer(playerId: string): Player | undefined {
   const room = requireRoom();
   return room.players.find((player) => player.id === playerId && player.isActive);
+}
+
+function getActivePlayers(room: RoomState): Player[] {
+  return room.players.filter((player) => player.isActive);
 }
 
 function setPhase(room: RoomState, phase: RoomState['phase']) {

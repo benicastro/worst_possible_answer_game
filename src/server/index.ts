@@ -19,7 +19,10 @@ import {
   advanceToResults,
   advanceToScoreboard,
   nextRound,
-  endGame
+  endGame,
+  getPhaseTimerDeadline,
+  isAnsweringComplete,
+  isVotingComplete
 } from './gameState.js';
 import { ClientEvents, ServerEvents } from '../shared/events.js';
 import { HostSettings } from '../shared/types.js';
@@ -36,6 +39,7 @@ const io = new IOServer(server, {
 
 const clientDistPath = path.join(__dirname, '../../client/dist');
 const clientIndexPath = path.join(clientDistPath, 'index.html');
+let phaseTimerHandle: ReturnType<typeof setTimeout> | null = null;
 
 // serve static client build if present
 app.use(express.static(clientDistPath));
@@ -79,12 +83,14 @@ io.on('connection', (socket: Socket) => {
     }
 
     addPlayer(socket.id, name);
+    maybeAutoAdvance();
     broadcastState();
   });
 
   socket.on(ClientEvents.LeaveRoom, () => {
     console.log('LeaveRoom');
     removeParticipant(socket.id);
+    maybeAutoAdvance();
     broadcastState();
   });
 
@@ -95,18 +101,21 @@ io.on('connection', (socket: Socket) => {
     }
 
     startGame(settings);
+    maybeAutoAdvance();
     broadcastState();
   });
 
   socket.on(ClientEvents.SubmitAnswer, (answer: string) => {
     console.log('SubmitAnswer');
     submitAnswer(socket.id, answer);
+    maybeAutoAdvance();
     broadcastState();
   });
 
   socket.on(ClientEvents.SkipAnswer, () => {
     console.log('SkipAnswer');
     skipAnswer(socket.id);
+    maybeAutoAdvance();
     broadcastState();
   });
 
@@ -124,6 +133,7 @@ io.on('connection', (socket: Socket) => {
       return;
     }
 
+    maybeAutoAdvance();
     broadcastState();
   });
 
@@ -140,12 +150,14 @@ io.on('connection', (socket: Socket) => {
     }
 
     openVoting();
+    maybeAutoAdvance();
     broadcastState();
   });
 
   socket.on(ClientEvents.SubmitVote, (answerId: string) => {
     console.log('SubmitVote');
     submitVote(socket.id, answerId);
+    maybeAutoAdvance();
     broadcastState();
   });
 
@@ -156,6 +168,7 @@ io.on('connection', (socket: Socket) => {
     }
 
     advanceToResults();
+    maybeAutoAdvance();
     broadcastState();
   });
 
@@ -166,6 +179,7 @@ io.on('connection', (socket: Socket) => {
     }
 
     advanceToScoreboard();
+    maybeAutoAdvance();
     broadcastState();
   });
 
@@ -176,6 +190,7 @@ io.on('connection', (socket: Socket) => {
     }
 
     nextRound();
+    maybeAutoAdvance();
     broadcastState();
   });
 
@@ -186,18 +201,79 @@ io.on('connection', (socket: Socket) => {
     }
 
     endGame();
+    maybeAutoAdvance();
     broadcastState();
   });
 
   socket.on('disconnect', () => {
     console.log('disconnect', socket.id);
     removeParticipant(socket.id);
+    maybeAutoAdvance();
     broadcastState();
   });
 });
 
 function broadcastState() {
+  schedulePhaseTimer();
   io.emit(ServerEvents.StateUpdate, state);
+}
+
+function maybeAutoAdvance() {
+  const room = state.room;
+  if (!room) {
+    return;
+  }
+
+  if (room.phase === 'answering' && isAnsweringComplete(room)) {
+    closeAnswering();
+  }
+
+  if (room.phase === 'voting' && isVotingComplete(room)) {
+    advanceToResults();
+  }
+}
+
+function schedulePhaseTimer() {
+  if (phaseTimerHandle) {
+    clearTimeout(phaseTimerHandle);
+    phaseTimerHandle = null;
+  }
+
+  const room = state.room;
+  if (!room) {
+    return;
+  }
+
+  const deadline = getPhaseTimerDeadline(room);
+  if (deadline === null) {
+    return;
+  }
+
+  const scheduledPhase = room.phase;
+  const scheduledStart = room.phaseStartedAt;
+  const delayMs = Math.max(0, deadline - Date.now());
+
+  phaseTimerHandle = setTimeout(() => {
+    const currentRoom = state.room;
+    if (!currentRoom) {
+      return;
+    }
+
+    if (currentRoom.phase !== scheduledPhase || currentRoom.phaseStartedAt !== scheduledStart) {
+      return;
+    }
+
+    if (currentRoom.phase === 'answering') {
+      closeAnswering();
+    } else if (currentRoom.phase === 'voting') {
+      advanceToResults();
+    } else {
+      return;
+    }
+
+    maybeAutoAdvance();
+    broadcastState();
+  }, delayMs);
 }
 
 const PORT = process.env.PORT || 4000;
