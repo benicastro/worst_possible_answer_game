@@ -19,14 +19,14 @@ const VotingScreen: React.FC = () => {
 
   return (
     <AppShell
-      title="Vote for the funniest disaster"
+      title="Choose the funniest disaster"
       subtitle={room.prompt}
       role="player"
       roomCode={room.code}
       phase={room.phase}
       round={room.round}
       totalRounds={room.totalRounds}
-      status={<span>You get one vote. You cannot vote for your own answer.</span>}
+      status={<span>You get one vote, and you cannot give it to yourself.</span>}
     >
       <div className="split-layout">
         <Panel title="Voting status" description="Once your vote is in, it stays locked." emphasis="soft">
@@ -38,7 +38,7 @@ const VotingScreen: React.FC = () => {
             <PhaseTimer room={room} label="Voting closes in" />
           </div>
         </Panel>
-        <Panel title="Answer list" description={mePlayer.hasVoted ? 'Your vote is locked in.' : 'Pick exactly one answer.'} emphasis="accent">
+        <Panel title="Answer list" description={mePlayer.hasVoted ? 'Your vote is locked in.' : 'Pick the answer that made you laugh the hardest.'} emphasis="accent">
           <ul className="vote-list">
             {room.answers.map((answer) => (
               <li key={answer.id} className={selectedAnswerId === answer.id ? 'vote-list__item vote-list__item--selected' : 'vote-list__item'}>
@@ -52,7 +52,7 @@ const VotingScreen: React.FC = () => {
                     onChange={(event) => setSelectedAnswerId(event.target.value)}
                   />
                   <span>{answer.text}</span>
-                  {answer.id === myAnswerId ? <em className="vote-option__note">Your answer</em> : null}
+                  {answer.id === myAnswerId ? <em className="vote-option__note">You wrote this one</em> : null}
                 </label>
               </li>
             ))}

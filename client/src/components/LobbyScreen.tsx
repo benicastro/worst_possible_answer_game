@@ -12,8 +12,8 @@ const LobbyScreen: React.FC = () => {
 
   return (
     <AppShell
-      title="Players are gathering"
-      subtitle="Stay ready. The host will launch the first prompt from their control screen."
+      title="The room is filling up"
+      subtitle="Get comfortable. The host will kick off the first prompt when the team is ready."
       role="player"
       roomCode={room.code}
       phase={room.phase}
@@ -22,13 +22,13 @@ const LobbyScreen: React.FC = () => {
       status={<span>You are signed in as <strong>{mePlayer?.name}</strong>.</span>}
     >
       <div className="split-layout">
-        <Panel title="Room status" description="Everyone here will enter the first round together." emphasis="accent">
+        <Panel title="Room status" description="Everyone here will jump into the first round together." emphasis="accent">
           <StatGrid>
             <StatCard label="Players joined" value={room.players.length} />
             <StatCard label="Rounds planned" value={room.totalRounds} />
           </StatGrid>
         </Panel>
-        <Panel title="Player list" description="Your name is highlighted in the room roster." emphasis="soft">
+        <Panel title="Who is in" description="Your name stays highlighted so you can find yourself quickly." emphasis="soft">
           <ul className="name-list">
             {room.players.map((player) => (
               <li key={player.id} className={player.id === mePlayer?.id ? 'name-list__item name-list__item--self' : 'name-list__item'}>

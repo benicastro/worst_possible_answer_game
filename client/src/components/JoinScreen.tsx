@@ -9,34 +9,34 @@ const JoinScreen: React.FC = () => {
 
   return (
     <AppShell
-      title="A party game for gloriously bad answers"
-      subtitle="A Bayanihan Partners team game: one host runs the room, everyone else submits the funniest wrong answer they can think of."
+      title="A team game for brilliantly bad answers"
+      subtitle="Built for Bayanihan Partners sessions: one host runs the room, everyone else tries to deliver the funniest wrong response."
       role="guest"
       status={
         room ? (
           <span>
-            Room <strong>{room.code}</strong> is live. Join from this tab as a player, or open another tab to host.
+            Room <strong>{room.code}</strong> is live. Join here as a player, or open another tab if you are the host.
           </span>
         ) : (
-          <span>Create the room here, then share the code with everyone else.</span>
+          <span>Start the room here, then invite the team in.</span>
         )
       }
     >
       <div className="split-layout">
         <Panel
-          title="How it works"
-          description="The host controls pacing. Players answer, watch reveals, vote, and climb the leaderboard."
+          title="How the game flows"
+          description="The room moves quickly. The host runs the pace, the players bring the chaos."
           emphasis="soft"
         >
           <ol className="info-list">
-            <li>Host creates one room.</li>
-            <li>Players join with a display name.</li>
-            <li>Each round moves through answer, reveal, vote, and results.</li>
+            <li>The host opens one shared room.</li>
+            <li>Players join with a display name and stay in for the whole session.</li>
+            <li>Each round moves through answer, reveal, vote, and score.</li>
           </ol>
         </Panel>
         <Panel
           title={room ? 'Join the room' : 'Open the room'}
-          description={room ? 'Pick a display name. It stays locked for this session.' : 'Start the host session before players join.'}
+          description={room ? 'Pick the name you want the room to know you by. It stays locked for this session.' : 'Open the host console first, then let the team pile in.'}
           emphasis="accent"
         >
           {!room ? (
