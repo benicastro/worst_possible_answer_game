@@ -35,12 +35,14 @@ const ScoreboardScreen: React.FC = () => {
     >
       <div className="split-layout split-layout--cinema">
         <Panel title="Podium" description="The round leaders get the big stage first." emphasis="accent">
+          <div className="round-chip">Round {room.round} swing</div>
           <div className="podium">
             {podium.map((entry, index) => (
               <div
                 key={entry.id}
                 className={`podium__card podium__card--${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}${entry.highlight ? ' podium__card--highlight' : ''}`}
               >
+                <div className="show-stamp show-stamp--soft">{index === 0 ? 'Leading the room' : index === 1 ? 'Close behind' : 'Still in it'}</div>
                 <div className="podium__place">#{index + 1}</div>
                 <div className="podium__name">{entry.name}</div>
                 <div className="podium__detail">{entry.detail}</div>

@@ -32,6 +32,7 @@ const ResultsScreen: React.FC = () => {
       <div className="split-layout split-layout--cinema">
         <Panel title="Round winner" description="The room's favorite worst answer gets the headline treatment." emphasis="accent">
           <div className="winner-hero">
+            <div className="show-stamp">Crowd favorite</div>
             <div className="winner-hero__label">Top answer</div>
             <div className="winner-hero__text">{winner?.text ?? 'No winning answer this round.'}</div>
             <div className="winner-hero__meta">
