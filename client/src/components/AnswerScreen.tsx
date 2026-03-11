@@ -16,17 +16,17 @@ const AnswerScreen: React.FC = () => {
 
   return (
     <AppShell
-      title="Write your worst possible answer"
+      title="Make it confidently wrong"
       subtitle={room.prompt}
       role="player"
       roomCode={room.code}
       phase={room.phase}
       round={room.round}
       totalRounds={room.totalRounds}
-      status={<span>Your answer locks the moment you submit it.</span>}
+      status={<span>Once you send it, that answer is locked for the round.</span>}
     >
       <div className="split-layout">
-        <Panel title="Round brief" description="Aim for funny, wrong, and memorable." emphasis="soft">
+        <Panel title="Round brief" description="Aim for funny, bold, and obviously incorrect." emphasis="soft">
           <StatGrid>
             <StatCard label="Answer timer" value={`${room.answerTimerSeconds}s`} />
             <StatCard label="Players active" value={room.players.filter((player) => player.isActive).length} />
@@ -36,8 +36,8 @@ const AnswerScreen: React.FC = () => {
           </div>
         </Panel>
         <Panel
-          title={locked ? 'Submission locked' : 'Your answer'}
-          description={locked ? (mePlayer.hasSkipped ? 'You skipped this round but can still vote later.' : 'Sit back and wait for the reveal phase.') : 'One answer only. No edits once sent.'}
+          title={locked ? 'You are locked in' : 'Your answer'}
+          description={locked ? (mePlayer.hasSkipped ? 'You skipped this one, but you still get to vote later.' : 'You are done for this round. Now wait for the reveal.') : 'You get one shot. No edits once it is sent.'}
           emphasis="accent"
         >
           {locked ? (

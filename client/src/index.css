@@ -63,6 +63,26 @@ button {
   overflow: hidden;
 }
 
+.app-shell--host .hero-card {
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.97), rgba(241, 252, 250, 0.94)),
+    linear-gradient(120deg, rgba(13, 119, 107, 0.18), rgba(111, 167, 207, 0.1));
+}
+
+.app-shell--player .hero-card {
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.97), rgba(248, 252, 255, 0.94)),
+    linear-gradient(120deg, rgba(44, 113, 128, 0.12), rgba(232, 188, 98, 0.12));
+}
+
+.app-shell--host .mascot-card {
+  border-color: rgba(13, 119, 107, 0.16);
+}
+
+.app-shell--player .mascot-card {
+  border-color: rgba(44, 113, 128, 0.14);
+}
+
 .scene {
   position: absolute;
   top: 0;

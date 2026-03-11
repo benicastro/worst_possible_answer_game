@@ -11,14 +11,34 @@ const PHASE_LABELS: Record<Phase, string> = {
   final: 'Finale'
 };
 
-const PHASE_EMOJI: Partial<Record<Phase, string>> = {
-  lobby: 'Confetti up',
-  answering: 'Pens out',
-  revealing: 'Curtain up',
-  voting: 'Crowd chooses',
-  results: 'Big payoff',
-  scoreboard: 'Climbing',
-  final: 'Crowning'
+const PHASE_VIBES: Record<'host' | 'player' | 'guest', Partial<Record<Phase, string>>> = {
+  host: {
+    lobby: 'You are setting the room',
+    answering: 'Guide the round',
+    revealing: 'Control the reveal beat',
+    voting: 'Watch the room decide',
+    results: 'Announce the payoff',
+    scoreboard: 'Reset the energy',
+    final: 'Close the show'
+  },
+  player: {
+    lobby: 'Get ready to play',
+    answering: 'Pens out',
+    revealing: 'Curtain up',
+    voting: 'Choose your favorite',
+    results: 'Big payoff',
+    scoreboard: 'Climbing',
+    final: 'Crowning'
+  },
+  guest: {
+    lobby: 'Room open',
+    answering: 'Room open',
+    revealing: 'Room open',
+    voting: 'Room open',
+    results: 'Room open',
+    scoreboard: 'Room open',
+    final: 'Room open'
+  }
 };
 
 interface AppShellProps {
@@ -46,8 +66,10 @@ export const AppShell: React.FC<AppShellProps> = ({
   actions,
   children
 }) => {
+  const vibe = phase ? PHASE_VIBES[role][phase] : 'Room open';
+
   return (
-    <div className="app-shell">
+    <div className={`app-shell app-shell--${role}`}>
       <div className="scene scene--left">
         <div className="scene__blob scene__blob--mint" />
         <div className="scene__blob scene__blob--peach" />
@@ -74,7 +96,7 @@ export const AppShell: React.FC<AppShellProps> = ({
         </div>
         <header className="hero-card">
           <div className="hero-card__copy">
-            <div className="eyebrow">Worst Possible Answer</div>
+            <div className="eyebrow">{role === 'host' ? 'Host Console' : role === 'player' ? 'Player View' : 'Worst Possible Answer'}</div>
             <h1>{title}</h1>
             {subtitle ? <p className="hero-card__subtitle">{subtitle}</p> : null}
           </div>
@@ -95,7 +117,7 @@ export const AppShell: React.FC<AppShellProps> = ({
                 <span className="mascot-card__eye" />
                 <span className="mascot-card__smile" />
               </div>
-              <div className="mascot-card__label">{phase ? PHASE_EMOJI[phase] : 'Room open'}</div>
+              <div className="mascot-card__label">{vibe}</div>
             </div>
           </div>
         </header>

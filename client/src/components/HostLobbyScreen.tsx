@@ -14,14 +14,14 @@ const HostLobbyScreen: React.FC = () => {
 
   return (
     <AppShell
-      title="Host control room"
-      subtitle="Set the pace, watch the roster, and launch the first round when everyone is in."
+      title="You are running the room"
+      subtitle="Set the pace, watch the roster, and launch the first prompt when the energy feels right."
       role="host"
       roomCode={room.code}
       phase={room.phase}
       round={room.round}
       totalRounds={room.totalRounds}
-      status={<span>Share this code with players: <strong>{room.code}</strong></span>}
+      status={<span>Share this room code with players: <strong>{room.code}</strong></span>}
       actions={
         <ButtonRow>
           <button
@@ -35,7 +35,7 @@ const HostLobbyScreen: React.FC = () => {
       }
     >
       <div className="split-layout">
-        <Panel title="Game setup" description="V1 uses one built-in prompt pack and a fixed 10-round session." emphasis="accent">
+        <Panel title="Show settings" description="Keep it simple: one built-in prompt pack and a fixed 10-round session." emphasis="accent">
           <Stack>
             <label className="field">
               <span className="field__label">Answer timer</span>
@@ -55,7 +55,7 @@ const HostLobbyScreen: React.FC = () => {
             </label>
           </Stack>
         </Panel>
-        <Panel title="Room roster" description="The host is separate from the player list." emphasis="soft">
+        <Panel title="Room roster" description="You are the facilitator, so the host stays separate from the player list." emphasis="soft">
           <StatGrid>
             <StatCard label="Players ready" value={room.players.length} />
             <StatCard label="Prompt count" value={room.totalRounds} />
