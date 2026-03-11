@@ -19,16 +19,20 @@ const HostResultsScreen: React.FC = () => {
       score: player.score,
       detail: `+${player.lastRoundPoints} this round`
     }));
+  const podium = entries.slice(0, 3);
+  const rest = entries.slice(3);
+  const currentLeader = entries[0];
 
   return (
     <AppShell
       title="Host scoreboard"
-      subtitle="Use this pause to let the room react before you move on."
+      subtitle="Let the room react, then either launch the next round or close the session."
       role="host"
       roomCode={room.code}
       phase={room.phase}
       round={room.round}
       totalRounds={room.totalRounds}
+      status={<span>{currentLeader ? `${currentLeader.name} is leading with ${currentLeader.score} points.` : 'No leader yet.'}</span>}
       actions={
         <ButtonRow>
           {isLastRound ? (
@@ -43,9 +47,23 @@ const HostResultsScreen: React.FC = () => {
         </ButtonRow>
       }
     >
-      <Panel title="Standings" description="Everyone stays visible between rounds." emphasis="accent">
-        <LeaderboardList entries={entries} />
-      </Panel>
+      <div className="split-layout split-layout--cinema">
+        <Panel title="Podium" description="This is the host-friendly snapshot to announce out loud." emphasis="accent">
+          <div className="podium">
+            {podium.map((entry, index) => (
+              <div key={entry.id} className={`podium__card podium__card--${index === 0 ? 'first' : index === 1 ? 'second' : 'third'}`}>
+                <div className="podium__place">#{index + 1}</div>
+                <div className="podium__name">{entry.name}</div>
+                <div className="podium__detail">{entry.detail}</div>
+                <div className="podium__score">{entry.score}</div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+        <Panel title="Full standings" description="Everyone stays visible between rounds." emphasis="default">
+          {rest.length > 0 ? <LeaderboardList entries={rest} /> : <div className="callout">The full room is already on the podium.</div>}
+        </Panel>
+      </div>
     </AppShell>
   );
 };
