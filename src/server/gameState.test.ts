@@ -6,6 +6,10 @@ import {
   advanceToScoreboard,
   closeAnswering,
   createRoom,
+  getEligibleVoters,
+  getPhaseTimerDeadline,
+  isAnsweringComplete,
+  isVotingComplete,
   nextRound,
   openVoting,
   removeParticipant,
@@ -102,4 +106,50 @@ test('nextRound only advances from scoreboard', () => {
   nextRound();
   assert.equal(state.room?.round, 2);
   assert.equal(state.room?.phase, 'answering');
+});
+
+test('answering completion only becomes true when every active player is done', () => {
+  createRoom('host-1');
+  addPlayer('player-1', 'Alex');
+  addPlayer('player-2', 'Sam');
+  startGame();
+
+  assert.equal(isAnsweringComplete(state.room!), false);
+
+  submitAnswer('player-1', 'Absolutely not');
+  assert.equal(isAnsweringComplete(state.room!), false);
+
+  skipAnswer('player-2');
+  assert.equal(isAnsweringComplete(state.room!), true);
+});
+
+test('eligible voters exclude players who can only vote for themselves', () => {
+  createRoom('host-1');
+  addPlayer('player-1', 'Alex');
+  startGame();
+
+  submitAnswer('player-1', 'One terrible idea');
+  closeAnswering();
+  revealNextAnswer();
+  openVoting();
+
+  assert.deepEqual(getEligibleVoters(state.room!).map((player) => player.id), []);
+  assert.equal(isVotingComplete(state.room!), true);
+});
+
+test('phase timer deadline tracks answering and voting windows', () => {
+  createRoom('host-1');
+  addPlayer('player-1', 'Alex');
+  startGame({ answerTimerSeconds: 12, voteTimerSeconds: 7 });
+
+  const answeringDeadline = getPhaseTimerDeadline(state.room!);
+  assert.equal(answeringDeadline, state.room!.phaseStartedAt + 12_000);
+
+  submitAnswer('player-1', 'Bad answer');
+  closeAnswering();
+  revealNextAnswer();
+  openVoting();
+
+  const votingDeadline = getPhaseTimerDeadline(state.room!);
+  assert.equal(votingDeadline, state.room!.phaseStartedAt + 7_000);
 });
