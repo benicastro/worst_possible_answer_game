@@ -19,6 +19,8 @@ const HostRoundControlScreen: React.FC = () => {
   const hasAnswers = room.answers.length > 0;
   const revealedAnswers = room.answers.filter((answer) => answer.revealed);
   const nextHiddenAnswer = room.answers.find((answer) => !answer.revealed);
+  const latestReveal = revealedAnswers[revealedAnswers.length - 1] ?? null;
+  const earlierReveals = latestReveal ? revealedAnswers.slice(0, -1) : [];
   const allAnswersIn = room.phase === 'answering' && activePlayerCount > 0 && submittedCount === activePlayerCount;
   const allVotesIn = room.phase === 'voting' && activePlayerCount > 0 && votedCount === activePlayerCount;
   const resultRows = room.answers.map((answer) => {
@@ -123,17 +125,17 @@ const HostRoundControlScreen: React.FC = () => {
           </div>
         </Panel>
         {room.phase === 'revealing' && (
-          <Panel title="Reveal feed" description="This is what the room has already seen, plus what is queued next." emphasis="default">
-            {revealedAnswers.length > 0 ? (
-              <ul className="answer-feed">
-                {revealedAnswers.map((answer) => (
-                  <li key={answer.id} className="answer-feed__item">
-                    {answer.text}
-                  </li>
-                ))}
-              </ul>
+          <Panel title="Reveal stage" description="Use the latest reveal card as your main host cue." emphasis="default">
+            {latestReveal ? (
+              <div className="spotlight-card">
+                <div className="spotlight-card__tag">Newest reveal</div>
+                <div className="spotlight-card__text">{latestReveal.text}</div>
+              </div>
             ) : (
-              <div className="callout">No answers have been revealed yet.</div>
+              <div className="spotlight-card spotlight-card--empty">
+                <div className="spotlight-card__tag">Curtain rising</div>
+                <div className="spotlight-card__text">No answers have been revealed yet.</div>
+              </div>
             )}
             <div className="panel-spacer">
               <div className="callout callout--queued">
@@ -145,12 +147,35 @@ const HostRoundControlScreen: React.FC = () => {
                     : 'No answers this round. Skip straight to results.'}
               </div>
             </div>
+            {earlierReveals.length > 0 ? (
+              <div className="panel-spacer">
+                <ul className="answer-feed answer-feed--stacked">
+                  {earlierReveals.slice().reverse().map((answer) => (
+                    <li key={answer.id} className="answer-feed__item">
+                      {answer.text}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </Panel>
         )}
         {room.phase === 'results' && (
           <Panel title="Round outcome" description="Use this summary to announce the result live." emphasis="default">
             {resultRows.length > 0 ? (
-              <ul className="results-list">
+              <>
+                <div className="winner-hero winner-hero--compact">
+                  <div className="winner-hero__label">Round winner</div>
+                  <div className="winner-hero__text">{resultRows.find((row) => row.isWinner)?.text ?? 'No winning answer this round.'}</div>
+                  <div className="winner-hero__meta">
+                    {(() => {
+                      const winnerRow = resultRows.find((row) => row.isWinner);
+                      return winnerRow ? `By ${winnerRow.author} with ${winnerRow.voteCount} votes` : 'No answers were submitted this round.';
+                    })()}
+                  </div>
+                </div>
+                <div className="panel-spacer" />
+                <ul className="results-list">
                 {resultRows.map((row) => (
                   <li key={row.answerId} className={row.isWinner ? 'results-list__item results-list__item--winner' : 'results-list__item'}>
                     <div className="results-list__answer">{row.text}</div>
@@ -160,7 +185,8 @@ const HostRoundControlScreen: React.FC = () => {
                     </div>
                   </li>
                 ))}
-              </ul>
+                </ul>
+              </>
             ) : (
               <div className="callout">No answers were submitted this round.</div>
             )}

@@ -397,6 +397,11 @@ button {
   gap: 1rem;
 }
 
+.split-layout--cinema {
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  align-items: start;
+}
+
 .host-control-layout {
   display: grid;
   grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
@@ -625,6 +630,10 @@ button {
   gap: 0.8rem;
 }
 
+.answer-feed--stacked .answer-feed__item {
+  opacity: 0.88;
+}
+
 .info-list {
   display: grid;
   gap: 0.85rem;
@@ -719,6 +728,139 @@ button {
 .leaderboard__score {
   font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   font-size: 1.5rem;
+}
+
+.spotlight-card,
+.winner-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 1.25rem 1.2rem;
+  border: 1px solid rgba(24, 52, 63, 0.08);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(232, 188, 98, 0.18), transparent 35%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 251, 249, 0.94));
+  box-shadow: var(--shadow-md);
+}
+
+.spotlight-card::after,
+.winner-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto -3rem -3rem auto;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 999px;
+  background: rgba(57, 164, 151, 0.08);
+}
+
+.spotlight-card--empty {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 250, 255, 0.92));
+}
+
+.spotlight-card__tag,
+.winner-hero__label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(13, 119, 107, 0.1);
+  color: var(--host);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.spotlight-card__text,
+.winner-hero__text {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.9rem;
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 2.3rem);
+  line-height: 1.15;
+}
+
+.spotlight-card__text {
+  max-width: 18ch;
+}
+
+.winner-hero__meta {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.8rem;
+  color: var(--muted);
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.winner-hero--compact .winner-hero__text {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+}
+
+.podium {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  align-items: end;
+}
+
+.podium__card {
+  padding: 1rem 0.95rem;
+  border: 1px solid rgba(24, 52, 63, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.podium__card--first {
+  min-height: 14.5rem;
+  background:
+    radial-gradient(circle at top, rgba(232, 188, 98, 0.24), transparent 38%),
+    rgba(255, 255, 255, 0.92);
+}
+
+.podium__card--second {
+  min-height: 12.5rem;
+}
+
+.podium__card--third {
+  min-height: 11rem;
+}
+
+.podium__card--highlight {
+  border-color: rgba(13, 119, 107, 0.22);
+}
+
+.podium__place {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.podium__name {
+  margin-top: 0.7rem;
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+
+.podium__detail {
+  margin-top: 0.45rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.podium__score {
+  margin-top: 0.8rem;
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  font-size: 2rem;
 }
 
 .timer-card {
@@ -817,9 +959,11 @@ button {
   }
 
   .split-layout,
+  .split-layout--cinema,
   .host-control-layout,
   .stat-grid,
-  .hero-card__rail {
+  .hero-card__rail,
+  .podium {
     grid-template-columns: 1fr;
   }
 }
