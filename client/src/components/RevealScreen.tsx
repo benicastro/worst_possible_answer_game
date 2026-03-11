@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRoom } from '../RoomContext';
-import { AppShell, Panel, StatCard, StatGrid } from './AppShell';
+import { AppShell, Panel } from './AppShell';
 
 const RevealScreen: React.FC = () => {
   const { state } = useRoom();
@@ -24,20 +24,8 @@ const RevealScreen: React.FC = () => {
       phase={room.phase}
       round={room.round}
       totalRounds={room.totalRounds}
-      status={<span>Answers stay anonymous until results. The newest reveal gets the spotlight.</span>}
     >
       <div className="split-layout split-layout--cinema">
-        <Panel title="Reveal progress" description="The host reveals submissions one at a time in order." emphasis="soft">
-          <StatGrid>
-            <StatCard label="Revealed" value={`${room.revealedCount}/${room.answers.length}`} />
-            <StatCard label="Still hidden" value={hiddenCount} />
-          </StatGrid>
-          <div className="panel-spacer">
-            <div className="callout callout--queued">
-              {hiddenCount > 0 ? 'Stay ready. Another awful answer is about to land.' : 'Every answer is out. Voting is almost open.'}
-            </div>
-          </div>
-        </Panel>
         <Panel title="On stage now" description="This is the current answer the room is reacting to." emphasis="accent">
           {latestReveal ? (
             <div className="spotlight-card">
@@ -54,6 +42,10 @@ const RevealScreen: React.FC = () => {
           )}
         </Panel>
         <Panel title="Already revealed" description="Earlier answers stay visible while the latest one takes center stage." emphasis="default">
+          <div className="callout callout--queued">
+            {hiddenCount > 0 ? 'Stay ready. Another awful answer is about to land.' : 'Every answer is out. Voting is almost open.'}
+          </div>
+          <div className="panel-spacer" />
           {earlierReveals.length > 0 ? (
             <ul className="answer-feed answer-feed--stacked">
               {earlierReveals.slice().reverse().map((answer) => (
