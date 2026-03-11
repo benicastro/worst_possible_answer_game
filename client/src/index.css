@@ -196,49 +196,6 @@ button {
   box-shadow: var(--shadow-md);
 }
 
-.cue-strip {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0.55rem;
-  margin-bottom: 1rem;
-}
-
-.cue-strip__beat {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  padding: 0.65rem 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.62);
-  color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  box-shadow: var(--shadow-md);
-  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
-}
-
-.cue-strip__beat--active {
-  transform: translateY(-1px) scale(1.02);
-  background: linear-gradient(135deg, rgba(13, 119, 107, 0.12), rgba(232, 188, 98, 0.2));
-  color: var(--ink);
-}
-
-.cue-strip__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(89, 113, 122, 0.35);
-}
-
-.cue-strip__beat--active .cue-strip__dot {
-  background: var(--host);
-  box-shadow: 0 0 0 6px rgba(13, 119, 107, 0.12);
-}
-
 .brand-ribbon__identity {
   display: flex;
   align-items: center;
@@ -1139,10 +1096,6 @@ button {
   .brand-ribbon {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .cue-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .split-layout,
