@@ -38,7 +38,7 @@ const io = new IOServer(server, {
   }
 });
 
-const clientDistPath = path.join(__dirname, '../../client/dist');
+const clientDistPath = path.resolve(__dirname, '../../../client/dist');
 const clientIndexPath = path.join(clientDistPath, 'index.html');
 let phaseTimerHandle: ReturnType<typeof setTimeout> | null = null;
 
