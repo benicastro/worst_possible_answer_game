@@ -196,49 +196,6 @@ button {
   box-shadow: var(--shadow-md);
 }
 
-.cue-strip {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0.55rem;
-  margin-bottom: 1rem;
-}
-
-.cue-strip__beat {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  padding: 0.65rem 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.62);
-  color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  box-shadow: var(--shadow-md);
-  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
-}
-
-.cue-strip__beat--active {
-  transform: translateY(-1px) scale(1.02);
-  background: linear-gradient(135deg, rgba(13, 119, 107, 0.12), rgba(232, 188, 98, 0.2));
-  color: var(--ink);
-}
-
-.cue-strip__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(89, 113, 122, 0.35);
-}
-
-.cue-strip__beat--active .cue-strip__dot {
-  background: var(--host);
-  box-shadow: 0 0 0 6px rgba(13, 119, 107, 0.12);
-}
-
 .brand-ribbon__identity {
   display: flex;
   align-items: center;
@@ -519,6 +476,40 @@ button {
 
 .panel-spacer {
   margin-top: 1rem;
+}
+
+.compact-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.compact-strip--status {
+  grid-template-columns: repeat(2, max-content);
+  justify-content: flex-start;
+}
+
+.compact-strip__item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(24, 52, 63, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.compact-strip__label {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.compact-strip__item strong {
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  font-size: 1rem;
 }
 
 .round-chip {
@@ -1141,13 +1132,10 @@ button {
     align-items: flex-start;
   }
 
-  .cue-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .split-layout,
   .split-layout--cinema,
   .host-control-layout,
+  .compact-strip,
   .stat-grid,
   .hero-card__rail,
   .podium {
