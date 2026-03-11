@@ -219,29 +219,17 @@ button {
 }
 
 .brand-mark {
-  position: relative;
   display: grid;
   place-items: center;
-  width: 54px;
-  height: 54px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(57, 164, 151, 0.16), rgba(232, 188, 98, 0.18));
+  width: 64px;
+  height: 64px;
 }
 
-.brand-mark__ring {
-  position: absolute;
-  inset: 7px;
-  border: 2px solid rgba(13, 119, 107, 0.3);
-  border-radius: 14px;
-}
-
-.brand-mark__letters {
-  position: relative;
-  z-index: 1;
-  color: var(--host);
-  font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
-  font-size: 1rem;
-  font-weight: 800;
+.brand-mark__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(188, 128, 48, 0.12));
 }
 
 .hero-card,
